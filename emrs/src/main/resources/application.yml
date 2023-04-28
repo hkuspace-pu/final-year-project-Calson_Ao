@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: "local"
+  main:
+    banner-mode: "on"
+
+---
+
+spring:
+  profiles: local
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+
+server: 
+  port: 80
+  context-path: /emrs
+  tomcat: 
+    max-threads: 30
+
+logging:
+  config: classpath:logback-local.xml
