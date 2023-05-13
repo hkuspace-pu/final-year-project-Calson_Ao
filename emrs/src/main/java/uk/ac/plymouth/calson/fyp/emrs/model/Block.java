@@ -1,41 +1,61 @@
 package uk.ac.plymouth.calson.fyp.emrs.model;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Block
 {
-	private String record;
-	private long timeStamp;
-	private int nonce;
-	private String hashValue;
-	private String prevHashValue;
+//	public static final String HASH_PREFIX = StringUtils.leftPad("", 2, "0");
+	public static final String FIXED_HASH_PREFIX = "00";	// hash value of this block must starts with this prefix
+	public static final int PREFIX_LENGTH = FIXED_HASH_PREFIX.length();
 	
-	public String getRecord()
+	private long timestamp;			// timestamp of creating this block
+	private String data;			// actual data (of transactions)
+	private int nonce;				// random number used in blockchain encryption
+	private String prevHashValue;	// hash value of previous block
+	private String hashValue;		// hash value of this block
+	
+	public Block()
 	{
-		return record;
+		nonce = 1;
+		timestamp = System.currentTimeMillis();
 	}
-	public void setRecord(String record)
+	
+	public void incrementNonce()
 	{
-		this.record = record;
+		nonce++;
 	}
-	public long getTimeStamp()
+	
+	@Override
+	public String toString()
 	{
-		return timeStamp;
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
 	}
-	public void setTimeStamp(long timeStamp)
+	
+	public String getData()
 	{
-		this.timeStamp = timeStamp;
+		return data;
 	}
+	public void setData(String data)
+	{
+		this.data = data;
+	}
+	
+	public long getTimestamp()
+	{
+		return timestamp;
+	}
+	
 	public int getNonce()
 	{
 		return nonce;
 	}
-	public void setNonce(int nonce)
-	{
-		this.nonce = nonce;
-	}
+
 	public String getHashValue()
 	{
 		return hashValue;
 	}
+	
 	public void setHashValue(String hashValue)
 	{
 		this.hashValue = hashValue;

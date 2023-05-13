@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-<modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.ac.plymouth.calson.fyp</groupId>
 	<artifactId>emrs</artifactId>
 	<version>1.0</version>
@@ -13,11 +13,11 @@
 		<version>2.7.6</version>
 		<relativePath />
 	</parent>
-	
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-	
+
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -44,5 +44,11 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>4.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>
