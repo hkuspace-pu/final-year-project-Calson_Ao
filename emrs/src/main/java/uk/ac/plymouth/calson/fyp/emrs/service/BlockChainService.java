@@ -30,6 +30,37 @@ public class BlockChainService
 		blockchain = new ArrayList<Block>();
 	}
 	
+	public int getSize()
+	{
+		return blockchain.size();
+	}
+	
+	public void create(String data)
+	{
+		Block block = new Block();
+		block.setData(data);
+		if (blockchain.isEmpty())
+		{
+			block.setPrevHashValue(null);	// the first block has no previous hash value
+		}
+		else
+		{
+			Block prevBlock = blockchain.get(blockchain.size() - 1);
+			String prevHash = prevBlock.getHashValue();
+			block.setPrevHashValue(prevHash);
+		}
+		
+		String myHash = cryptoService.mineBlock(block);
+		block.setHashValue(myHash);
+		blockchain.add(block);
+		logger.info("new block is created and added to blockchain, block=[{}]",  block.toString());
+	}
+	
+	public Block get(int i)
+	{
+		return blockchain.get(i);
+	}
+	
 	public boolean verify()
 	{
 		boolean success = true;
@@ -41,17 +72,26 @@ public class BlockChainService
 			String myHash2 = cryptoService.computeHash(currentBlock);	// nonce already adjusted during mine before, myHash2 should starts with Block.FIXED_HASH_PREFIX
 			if (myHash1.equals(myHash2))
 			{
-				if (i > 0)
+				String prefix1 = myHash1.substring(0, Block.PREFIX_LENGTH);
+				if (prefix1.equals(Block.FIXED_HASH_PREFIX))
 				{
-					String prevHash1 = currentBlock.getPrevHashValue();
-					Block prevBlock = blockchain.get(i - 1);
-					String prevHash2 = prevBlock.getHashValue();
-					
-					if (!prevHash1.equals(prevHash2))
+					if (i > 0)
 					{
-						logger.warn("prev-hash of block[{}] and hash of block[{}] NOT match! [{}] vs [{}]", i, (i-1), prevHash1, prevHash2);
-						success = false;
+						String prevHash1 = currentBlock.getPrevHashValue();
+						Block prevBlock = blockchain.get(i - 1);
+						String prevHash2 = prevBlock.getHashValue();
+						
+						if (!prevHash1.equals(prevHash2))
+						{
+							logger.warn("prev-hash of block[{}] and hash of block[{}] NOT match! [{}] vs [{}]", i, (i-1), prevHash1, prevHash2);
+							success = false;
+						}
 					}
+				}
+				else
+				{
+					logger.warn("saved hash of block[{}] does NOT start with {}", i, Block.FIXED_HASH_PREFIX);
+					success = false;
 				}
 			}
 			else
@@ -61,6 +101,15 @@ public class BlockChainService
 			}
 			
 			i++;
+		}
+		
+		if (success)
+		{
+			logger.info("blockchain verified successfully!");
+		}
+		else
+		{
+			logger.warn("blockchain is INVALID!");
 		}
 		
 		return success;
