@@ -18,19 +18,15 @@ public class MainApplication
 	{
 		SpringApplication.run(MainApplication.class, args);
 		
-		ApplicationContext ac = SpringApplication.run(MainApplication.class, args);
-		BlockChainService blockChainService = ac.getBean(BlockChainService.class);
-		
-		
-		// sample blocks 
-		blockChainService.create("Patient_1_Data");
-		blockChainService.create("Patient_2_Data");
-		blockChainService.create("Patient_3_Data");
-		blockChainService.verify();
-		
-		Block block1 = blockChainService.get(0);
-		block1.setData("Patient_4_Data");
-		blockChainService.verify();
+//		ApplicationContext ac = SpringApplication.run(MainApplication.class, args);
+//		BlockChainService blockChainService = ac.getBean(BlockChainService.class);
+//		blockChainService.create("Patient_1_Data");
+//		blockChainService.create("Patient_2_Data");
+//		blockChainService.create("Patient_3_Data");
+//		blockChainService.verify();
+//		Block block1 = blockChainService.get(0);
+//		block1.setData("Patient_4_Data");
+//		blockChainService.verify();
 		
 	}
 }
