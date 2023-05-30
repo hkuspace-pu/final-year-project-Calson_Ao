@@ -20,7 +20,7 @@ public class CryptoService
 	@PostConstruct
 	public void init()
 	{
-		logger.info("init CryptoService");
+		logger.info("init CryptoService ...");
 		hashUtil = new DigestUtils(MessageDigestAlgorithms.SHA_256);
 	}
 	

@@ -26,7 +26,7 @@ public class BlockChainService
 	@PostConstruct
 	public void init()
 	{
-		logger.info("init BlockChainService");
+		logger.info("init BlockChainService ...");
 		blockchain = new ArrayList<Block>();
 	}
 	
