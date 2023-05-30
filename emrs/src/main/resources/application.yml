@@ -1,8 +1,15 @@
 spring:
   profiles:
     active: local
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+server:
+  port: 80
+  servlet:
+    context-path: /emrs
 logging:
-  config: classpath:logback.xml
+  config: classpath:logback-local.xml
 
 ---
 
