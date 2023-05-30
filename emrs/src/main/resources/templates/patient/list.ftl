@@ -34,18 +34,16 @@
 	
 	<table>
 		<tr>
-			<td>ID</td>
-			<td>Name</td>
-			<td>Sex</td>
-			<td>HKID</td>
+			<td>Patient</td>
 		</tr>
 		
-		<#list patientList as patient>
+		<#list patientHkidList as hkid>
 			<tr>
-				<td>${patient.id}</td>
-				<td>${patient.name}</td>
-				<td>${patient.sex}</td>
-				<td>${patient.hkid}</td>
+				<td>
+				
+					<a href="<@spring.url '/patient/${hkid}/detail'/>">${hkid}</a>
+				
+				</td>
 			</tr>
 		</#list>
 	</table>

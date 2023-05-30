@@ -10,8 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import uk.ac.plymouth.calson.fyp.emrs.model.Patient;
-import uk.ac.plymouth.calson.fyp.emrs.repository.PatientRepository;
+import uk.ac.plymouth.calson.fyp.emrs.model.PatientBlock;
+import uk.ac.plymouth.calson.fyp.emrs.service.PatientBlockChainService;
 
 @Controller
 public class PatientController
@@ -19,25 +19,24 @@ public class PatientController
 	private static final Logger logger = LoggerFactory.getLogger(PatientController.class.getName());
 	
 	@Autowired
-	private PatientRepository patientRepository;
+	private PatientBlockChainService patientBlockChainService;
 	
 	@GetMapping("/patient/list")
 	public String patientList(Model model)
 	{
 		logger.info("Go to patient list page!");
-		List<Patient> patientList = patientRepository.findAll();
-		model.addAttribute("patientList", patientList);
+		List<String> patientHkidList = patientBlockChainService.findAllPatient();
+		model.addAttribute("patientHkidList", patientHkidList);
 		return "patient/list";
 	}
 	
 	@PostMapping("/patient/create")
-	public String createPatient(Model model, Patient patient)
+	public String createPatient(Model model, PatientBlock patientBlock)
 	{
-		patient = patientRepository.save(patient);
-		logger.info("Create patient=[name={}, sex={}, hkid={}], patient ID is {}", patient.getName(), patient.getSex(), patient.getHkid(), patient.getId());
+		logger.info("Create patient: {}", patientBlock.getPatientInfo());
 		
-		List<Patient> patientList = patientRepository.findAll();
-		model.addAttribute("patientList", patientList);
+		List<String> patientHkidList = patientBlockChainService.findAllPatient();
+		model.addAttribute("patientHkidList", patientHkidList);
 		return "patient/list";
 	}
 }

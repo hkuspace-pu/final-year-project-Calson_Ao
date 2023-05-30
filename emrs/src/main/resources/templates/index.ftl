@@ -8,12 +8,6 @@
 
 <body>
 	<h1>Welcome to EMRS</h1>
-	
 	<p><a href="<@spring.url '/patient/list'/>">Patient Information</a></p>
-	<p><a href="<@spring.url '/consultation/summary'/>">Consultation Record</a></p>
-	
-	<p>XXXXXXXX</p>
-	
-	
 </body>
 </html>
