@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import uk.ac.plymouth.calson.fyp.emrs.model.BlockchainSummary;
 import uk.ac.plymouth.calson.fyp.emrs.model.PatientBlock;
 
 @Service
@@ -42,47 +43,71 @@ public class PatientBlockChainService
 //		}
 //	}
 	
-	public List<String> findAllPatient()
+	public int countPatients()
 	{
-		List<String> hkidList = new ArrayList<String>( patientMap.keySet() );
-		return hkidList;
+		return patientMap.size();
 	}
 	
-	public void createPatientBlock(String name, String sex, String hkid)
+	public List<BlockchainSummary> findAllPatient()
 	{
-		PatientBlock block = new PatientBlock();
-		block.setName(name);
-		block.setSex(sex);
-		block.setHkid(hkid);
+		List<BlockchainSummary> resultList = new ArrayList<BlockchainSummary>();
 		
+		List<String> hkidList = new ArrayList<String>( patientMap.keySet() );
+		for (int i = 0; i < hkidList.size(); i++) {
+			String hkid = hkidList.get(i);
+			boolean valid = verify(hkid);
+			
+			BlockchainSummary bcs = new BlockchainSummary();
+			bcs.setHkid(hkid);
+			bcs.setValid(valid);
+			resultList.add(bcs);
+		}
+		
+		return resultList;
+	}
+	
+	public PatientBlock getPatientLatestBlock(String hkid)
+	{
+		// find the blockchain for the patient by his HKID
+		List<PatientBlock> blockchain = patientMap.get(hkid);
+		PatientBlock lastBlock = blockchain.get(blockchain.size() - 1); // get the last block in the chain
+		return lastBlock;
+	}
+	
+	
+	public List<PatientBlock> getBlockChain(String hkid)
+	{
+		// find the blockchain for the patient by his HKID
+		List<PatientBlock> blockchain = patientMap.get(hkid);
+		return blockchain;
+	}
+	
+	public void createPatientBlock(PatientBlock patientBlock)
+	{
+		String hkid = patientBlock.getHkid();
 		List<PatientBlock> blockchain = new ArrayList<PatientBlock>();		// create a blockchain for this patient immediately
 		patientMap.put(hkid, blockchain);
-		block.setPrevHashValue(null);	// prepare the first block, which should has no previous hash value
+		patientBlock.setPrevHashValue(null);	// prepare the first block, which should has no previous hash value
 		
-		String myHash = cryptoService.mineBlock(block);
-		block.setHashValue(myHash);
-		blockchain.add(block);
-		logger.info("patient[HKID={}] is created, the first block is added to chain, block=[{}]", hkid, block.toString());
+		String myHash = cryptoService.mineBlock(patientBlock);
+		patientBlock.setHashValue(myHash);
+		blockchain.add(patientBlock);
+		logger.info("patient[HKID={}] is created, the first block is added to chain, block=[{}]", hkid, patientBlock.toString());
 	}
 	
-	public void updatePatientBlock(String hkid, String name, String sex, String consultationData)
+	public void updatePatientBlock(PatientBlock patientBlock)
 	{
-		PatientBlock block = new PatientBlock();
-		block.setName(name);
-		block.setSex(sex);
-		block.setHkid(hkid);
-		block.setConsultationData(consultationData);
-		
+		String hkid = patientBlock.getHkid();
 		// find the blockchain for the patient by his HKID
 		List<PatientBlock> blockchain = patientMap.get(hkid);
 		PatientBlock prevBlock = blockchain.get(blockchain.size() - 1);		// get the last block in the chain
 		String prevHash = prevBlock.getHashValue();
-		block.setPrevHashValue(prevHash);			// set the previous hash for the new block
+		patientBlock.setPrevHashValue(prevHash);			// set the previous hash for the new block
 		
-		String myHash = cryptoService.mineBlock(block);
-		block.setHashValue(myHash);
-		blockchain.add(block);
-		logger.info("new block is created and added to blockchain, block=[{}]",  block.toString());
+		String myHash = cryptoService.mineBlock(patientBlock);
+		patientBlock.setHashValue(myHash);
+		blockchain.add(patientBlock);
+		logger.info("patient[HKID={}] is updated, new block is created and added to chain, block=[{}]", hkid, patientBlock.toString());
 	}
 	
 	public boolean verify(String hkid)

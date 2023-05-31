@@ -11,7 +11,7 @@
 	<h1>Patient Information</h1>
 	<p><a href="<@spring.url '/'/>">Back to home</a></p>
 	
-	<form name="createPatient" action="<@spring.url '/patient/create'/>" method="POST">
+	<form name="create-patient-form" action="<@spring.url '/patient/create'/>" method="POST">
 		<label for="name">Patient Name: </label>
 		<input type="text" name="name">
 		&nbsp; &nbsp; &nbsp; 
@@ -34,15 +34,19 @@
 	
 	<table>
 		<tr>
-			<td>Patient</td>
+			<td>Patient (HKID)</td>
+			<td>Valid</td>
 		</tr>
 		
-		<#list patientHkidList as hkid>
+		<#list patientList as patient>
 			<tr>
 				<td>
-				
-					<a href="<@spring.url '/patient/${hkid}/detail'/>">${hkid}</a>
-				
+					<a href="<@spring.url '/patient/${patient.hkid}/detail'/>">${patient.hkid}</a>
+				</td>
+				<td>
+					<#if patient.valid>
+						Y
+					</#if>
 				</td>
 			</tr>
 		</#list>
