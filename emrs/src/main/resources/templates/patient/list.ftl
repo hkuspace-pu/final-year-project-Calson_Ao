@@ -46,6 +46,8 @@
 				<td>
 					<#if patient.valid>
 						Y
+					<#else>
+						N
 					</#if>
 				</td>
 			</tr>

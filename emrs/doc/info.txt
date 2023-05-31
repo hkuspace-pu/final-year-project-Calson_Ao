@@ -2,4 +2,5 @@ Homepage
 http://localhost/emrs/
 
 Hacker View
-http://localhost/emrs/patientchain/a
+url: http://localhost/emrs/patientchain/<patient's HKID>
+eg: http://localhost/emrs/patientchain/A13128641
