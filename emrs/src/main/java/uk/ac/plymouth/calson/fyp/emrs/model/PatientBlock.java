@@ -39,7 +39,7 @@ public class PatientBlock
 	
 	public String getPatientInfo()
 	{
-		String patientInfo = hkid + "_" + name + "_" + sex;
+		String patientInfo = hkid + "_" + name + "_" + sex + "_" + consultationData;
 		return patientInfo;
 	}
 	

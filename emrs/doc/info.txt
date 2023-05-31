@@ -1,0 +1,5 @@
+Homepage
+http://localhost/emrs/
+
+Hacker View
+http://localhost/emrs/patientchain/a
